@@ -41,12 +41,11 @@ return [
             'provider' => 'users',
         ],
         'api' => [
-            'driver' => 'sancum',
+            'driver' => 'sanctum',
             'provider' => 'users',
 
         ],
     ],
-
 
     /*
     |--------------------------------------------------------------------------

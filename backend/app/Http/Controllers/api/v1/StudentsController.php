@@ -2,53 +2,71 @@
 
 namespace App\Http\Controllers\api\v1;
 
-use App\Models\sports;
 use App\Models\Students;
-// use App\Http\Requests\v1\sportsRequest;
+use App\Http\Requests\v1\StoreStudentsRequest;
 use App\Http\Requests\v1\UpdateStudentsRequest;
-
 use App\Http\Controllers\Controller;
-use App\Http\Requests\v1\sportsRequest;
+use Illuminate\Http\Request;
 
 class StudentsController extends Controller
 {
 
     public function index()
     {
-        return sports::paginate(10);
+        return Students::paginate(10);
     }
-    public function store(sportsRequest $request)
+    public function store(StoreStudentsRequest $request)
     {
-        sports::create($request->all());
+        Students::create($request->all());
 
         return [
-            'message'=>'Game created successfully'
+            'message'=>'Student Enrolled successfully'
         ];
     }
-    public function show(Request $sports,$id)
+    public function show(Students $students,$id)
     {
-        return sports::find($id);
+        return Students::find($id);
     }
-    public function update(sports $request, sports $sports,$id)
+    public function update(UpdateStudentsRequest $request, Students $students,$id)
     {
-        $student= sports::find($id);
-        if ($sports){
-            $sports->update($request->all());
+        $student= Students::find($id);
+        if ($student){
+            $student->update($request->all());
             return response()->json(['message'=>'Student update successfully!'],200);
         }else{
             return response()->json(['message'=>'Student not found'],404);
         }
     }
-    public function destroy(sports $sports,$id)
+    public function destroy(Students $students,$id)
     {
-        $sports = sports::find($id);
+        $student = Students::find($id);
 
-        if($sports){
-            $sports->delete();
+        if($student){
+            $student->delete();
 
             return response()->json(['message' => 'Student successfully deleted!'], 200);
         }else{
             return response()->json(['message' => 'Student not found.'], 404);
         }
     }
+
+
+    public function destroyMany(Request $request)
+    {
+
+    $request->validate([
+        'ids' => 'required|array',
+        'ids.*' => 'exists:students,id'
+    ]);
+
+
+    $ids = $request->input('ids');
+
+
+    Students::destroy($ids);
+
+
+    return response()->json(['message' => 'Students successfully deleted!'], 200);
+}
+
 }

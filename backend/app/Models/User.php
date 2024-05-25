@@ -10,11 +10,9 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
+   use HasApiTokens, HasFactory, Notifiable;
 
-
-    use HasApiTokens, HasFactory, Notifiable;
-
-    const ROLE_ADMIN ='';
+    const ROLE_ADMIN ='admin';
     const ROLE_COMMITTEE ='committee';
     const ROLE_CO_COMMITTEE ='co_committee';
     /**
